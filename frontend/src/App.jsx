@@ -1,35 +1,25 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import Login from './pages/Login.jsx';
+import Subscriptions from './pages/Subscriptions.jsx';
 
-function App() {
-  const [health, setHealth] = useState(null);
-  const [error, setError] = useState('');
-
-  useEffect(() => {
-    axios
-      .get('/api/health')
-      .then((response) => setHealth(response.data))
-      .catch(() => setError('Cannot reach the backend. Is it running?'));
-  }, []);
-
-  return (
-    <div className="min-h-screen bg-slate-100 flex items-center justify-center p-6">
-      <div className="bg-white rounded-xl shadow-md p-8 w-full max-w-md">
-        <h1 className="text-3xl font-bold text-indigo-600">SubTrack</h1>
-        <p className="text-slate-500 mt-1">Subscription Management System</p>
-
-        <div className="mt-6 text-sm">
-          {error && <p className="text-red-600">{error}</p>}
-          {!error && !health && <p className="text-slate-500">Checking backend...</p>}
-          {health && (
-            <p className="text-green-700">
-              Backend: {health.status} | Database: {health.database}
-            </p>
-          )}
-        </div>
-      </div>
-    </div>
-  );
+// Shows a page only if someone is logged in. The backend still checks every request.
+function RequireAuth({ children }) {
+  return localStorage.getItem('token') ? children : <Navigate to="/login" replace />;
 }
 
-export default App;
+export default function App() {
+  return (
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route
+        path="/subscriptions"
+        element={
+          <RequireAuth>
+            <Subscriptions />
+          </RequireAuth>
+        }
+      />
+      <Route path="*" element={<Navigate to="/subscriptions" replace />} />
+    </Routes>
+  );
+}
