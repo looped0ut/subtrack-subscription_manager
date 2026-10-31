@@ -1,12 +1,13 @@
-import 'dotenv/config';
+import { env } from './config/env.js';
 import express from 'express';
 import cors from 'cors';
-import { PrismaClient } from '@prisma/client';
+import prisma from './config/prisma.js';
+import authRoutes from './routes/auth.routes.js';
+import { notFound, errorHandler } from './middleware/errorHandler.js';
 
-const prisma = new PrismaClient();
 const app = express();
 
-app.use(cors());
+app.use(cors({ origin: env.frontendUrl }));
 app.use(express.json());
 
 // Health check: confirms the server is up AND the database is reachable
@@ -20,7 +21,11 @@ app.get('/api/health', async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`SubTrack API running on http://localhost:${PORT}`);
+app.use('/api/auth', authRoutes);
+
+app.use(notFound);
+app.use(errorHandler);
+
+app.listen(env.port, () => {
+  console.log(`SubTrack API running on http://localhost:${env.port}`);
 });
