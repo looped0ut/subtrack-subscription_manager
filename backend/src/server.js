@@ -11,6 +11,7 @@ import productRoutes from './routes/product.routes.js';
 import variantRoutes from './routes/variant.routes.js';
 import planRoutes from './routes/plan.routes.js';
 import templateRoutes from './routes/template.routes.js';
+import subscriptionRoutes from './routes/subscription.routes.js';
 
 const app = express();
 
@@ -36,6 +37,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/variants', variantRoutes);
 app.use('/api/plans', planRoutes);
 app.use('/api/quotation-templates', templateRoutes);
+app.use('/api/subscriptions', subscriptionRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
