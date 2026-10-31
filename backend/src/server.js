@@ -9,6 +9,8 @@ import { notFound, errorHandler } from './middleware/errorHandler.js';
 import taxRoutes from './routes/tax.routes.js';
 import productRoutes from './routes/product.routes.js';
 import variantRoutes from './routes/variant.routes.js';
+import planRoutes from './routes/plan.routes.js';
+import templateRoutes from './routes/template.routes.js';
 
 const app = express();
 
@@ -32,6 +34,8 @@ app.use('/api/customers', customerRoutes);
 app.use('/api/taxes', taxRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/variants', variantRoutes);
+app.use('/api/plans', planRoutes);
+app.use('/api/quotation-templates', templateRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

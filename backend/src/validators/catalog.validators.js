@@ -17,7 +17,7 @@ export const updateTaxSchema = taxBase.partial().refine(atLeastOne, atLeastOneMs
 // ---------- Variants and options ----------
 const optionBase = z.object({
   value: z.string().trim().min(1, 'Option name is required').max(50),
-  extraPrice: paise.default(0),
+  extraPrice: paise.optional(),
 });
 export const createOptionSchema = optionBase;
 export const updateOptionSchema = optionBase.partial().refine(atLeastOne, atLeastOneMsg);
@@ -32,7 +32,7 @@ export const updateVariantSchema = z.object({ name: variantName });
 // ---------- Product ----------
 const productBase = z.object({
   name: z.string().trim().min(2, 'Name must be at least 2 characters').max(150),
-  type: z.enum(['SOFTWARE', 'ADDON', 'SERVICE', 'OTHER']).default('SOFTWARE'),
+  type: z.enum(['SOFTWARE', 'ADDON', 'SERVICE', 'OTHER']).optional(),
   salesPrice: paise,
   costPrice: paise,
   notes: z
