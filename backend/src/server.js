@@ -3,6 +3,8 @@ import express from 'express';
 import cors from 'cors';
 import prisma from './config/prisma.js';
 import authRoutes from './routes/auth.routes.js';
+import userRoutes from './routes/user.routes.js';
+import customerRoutes from './routes/customer.routes.js';
 import { notFound, errorHandler } from './middleware/errorHandler.js';
 
 const app = express();
@@ -22,6 +24,8 @@ app.get('/api/health', async (req, res) => {
 });
 
 app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/customers', customerRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

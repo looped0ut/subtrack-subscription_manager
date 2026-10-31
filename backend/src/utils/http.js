@@ -1,0 +1,17 @@
+import { AppError } from './AppError.js';
+
+export function parseId(value) {
+  const id = Number(value);
+  if (!Number.isInteger(id) || id <= 0) throw new AppError('Invalid ID', 400);
+  return id;
+}
+
+export function parsePagination(query) {
+  const page = Math.max(1, parseInt(query.page, 10) || 1);
+  const limit = Math.min(100, Math.max(1, parseInt(query.limit, 10) || 10));
+  return { page, limit, skip: (page - 1) * limit };
+}
+
+export function pageResult(data, total, { page, limit }) {
+  return { data, pagination: { page, limit, total, totalPages: Math.ceil(total / limit) } };
+}
